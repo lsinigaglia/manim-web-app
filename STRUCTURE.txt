@@ -1,0 +1,81 @@
+manim-web-app/
+│
+├── 📄 README.md                 Main documentation
+├── 📄 QUICKSTART.md             TL;DR guide
+├── 📄 SETUP.md                  Detailed setup instructions
+├── 📄 PROJECT_STATUS.md         Implementation summary
+├── 📄 STRUCTURE.txt             This file
+│
+├── 📄 requirements.txt          Python dependencies
+├── 📄 docker-compose.yml        Docker orchestration
+├── 📄 Makefile                  Common commands
+├── 📄 .gitignore                Git exclusions
+├── 📄 .env.example              Environment template
+│
+├── 🚀 start.sh                  Quick start (Unix)
+├── 🚀 start.bat                 Quick start (Windows)
+├── 🧪 test_hello.py             Docker test
+├── 🧪 test_smoke.py             Full system test
+│
+├── 📁 app/                      FastAPI Application
+│   ├── __init__.py
+│   ├── 🔧 main.py               Server & routes
+│   ├── 🤖 generator.py          LLM integration
+│   ├── 🐳 renderer.py           Docker pipeline
+│   ├── 📚 examples.py           Example manager
+│   └── 📁 templates/
+│       └── 🌐 index.html        Web UI
+│
+├── 📁 examples/                 Curated Examples
+│   ├── 01_axes_plot/
+│   │   ├── example.py           Runnable scene
+│   │   ├── meta.json            Metadata + tags
+│   │   └── notes.md             Usage notes
+│   ├── 02_riemann_sums/
+│   │   ├── example.py
+│   │   ├── meta.json
+│   │   └── notes.md
+│   ├── 03_vector_addition/
+│   │   ├── example.py
+│   │   ├── meta.json
+│   │   └── notes.md
+│   ├── 04_transform_shapes/
+│   │   ├── example.py
+│   │   ├── meta.json
+│   │   └── notes.md
+│   └── 05_moving_dot/
+│       ├── example.py
+│       ├── meta.json
+│       └── notes.md
+│
+├── 📁 render/                   Docker Configuration
+│   └── 🐳 Dockerfile            Manim v0.18.0 image
+│
+└── 📁 generated/                Output (gitignored)
+    ├── scene.py                 Generated code
+    ├── latest.mp4               Latest video
+    └── media/                   Manim output
+        └── videos/
+
+Legend:
+  📄 Documentation/Config
+  🚀 Executable Script
+  🧪 Test Script
+  🔧 Core Application
+  🤖 AI/LLM Component
+  🐳 Docker Component
+  📚 Data/Library Component
+  🌐 Web Interface
+  📁 Directory
+
+Key Files to Understand:
+  1. app/main.py        - Start here for backend
+  2. app/generator.py   - LLM prompting logic
+  3. app/renderer.py    - Docker execution
+  4. app/templates/index.html - Frontend UI
+  5. render/Dockerfile  - Manim environment
+
+To Add New Examples:
+  1. Create folder: examples/06_your_example/
+  2. Add: example.py, meta.json, notes.md
+  3. Restart server

@@ -1,0 +1,6 @@
+{
+  "name": "Moving Dot on Curve",
+  "tags": ["dot", "moving", "curve", "tracker", "animation", "parametric"],
+  "difficulty": "medium",
+  "description": "Shows a dot moving along a curve using ValueTracker"
+}

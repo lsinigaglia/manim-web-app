@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiny Manim Web App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #0f0f23;
+            color: #cccccc;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #ffffff;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+
+        .subtitle {
+            color: #888;
+            margin-bottom: 30px;
+        }
+
+        .input-section {
+            background: #1a1a2e;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #aaa;
+            font-weight: 500;
+        }
+
+        textarea, select {
+            width: 100%;
+            padding: 12px;
+            background: #0f0f23;
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: #ccc;
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        select {
+            cursor: pointer;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        button {
+            padding: 12px 24px;
+            background: #5865F2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        button:hover:not(:disabled) {
+            background: #4752C4;
+        }
+
+        button:disabled {
+            background: #444;
+            cursor: not-allowed;
+        }
+
+        button.secondary {
+            background: #2c2f33;
+        }
+
+        button.secondary:hover:not(:disabled) {
+            background: #23272a;
+        }
+
+        .output-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .panel {
+            background: #1a1a2e;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+
+        .panel h2 {
+            color: #fff;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+
+        #videoPreview {
+            width: 100%;
+            border-radius: 4px;
+            background: #000;
+        }
+
+        .debug-content {
+            background: #0f0f23;
+            padding: 12px;
+            border-radius: 4px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .error {
+            color: #ff6b6b;
+        }
+
+        .success {
+            color: #51cf66;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #888;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 3px solid #333;
+            border-top: 3px solid #5865F2;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .output-section {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tiny Manim Web App</h1>
+        <p class="subtitle">Generate mathematical animations from text prompts</p>
+
+        <div class="input-section">
+            <label for="prompt">What animation do you want to create?</label>
+            <textarea
+                id="prompt"
+                placeholder="Example: Plot y = sin(x) on axes and animate a dot moving along it"
+            ></textarea>
+
+            <label for="examples" style="margin-top: 15px;">Reference Example (optional)</label>
+            <select id="examples">
+                <option value="">-- Auto-select based on prompt --</option>
+                {% for example in examples %}
+                <option value="{{ example.id }}">{{ example.name }} ({{ example.difficulty }})</option>
+                {% endfor %}
+            </select>
+
+            <div class="button-group">
+                <button id="generateBtn" onclick="generate()">Generate Animation</button>
+                <button id="fixBtn" class="secondary hidden" onclick="fixError()">Fix Error</button>
+            </div>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p id="loadingText">Generating animation...</p>
+        </div>
+
+        <div class="output-section">
+            <div class="panel">
+                <h2>Video Preview</h2>
+                <video id="videoPreview" controls>
+                    <source id="videoSource" src="" type="video/mp4">
+                    Your browser does not support video playback.
+                </video>
+            </div>
+
+            <div class="panel">
+                <h2>Debug Info</h2>
+                <div class="debug-content" id="debugInfo">
+                    Enter a prompt and click Generate to start.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let lastError = null;
+        let lastPrompt = null;
+
+        async function generate() {
+            const prompt = document.getElementById('prompt').value.trim();
+            const exampleSelect = document.getElementById('examples');
+            const selectedExample = exampleSelect.value;
+
+            if (!prompt) {
+                showDebug('Please enter a prompt.', 'error');
+                return;
+            }
+
+            lastPrompt = prompt;
+            lastError = null;
+
+            // UI updates
+            setLoading(true, 'Generating animation...');
+            document.getElementById('fixBtn').classList.add('hidden');
+            showDebug('Requesting generation from LLM...', 'info');
+
+            try {
+                const payload = {
+                    prompt: prompt,
+                    example_ids: selectedExample ? [selectedExample] : null
+                };
+
+                const response = await fetch('/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    // Show video
+                    const videoSource = document.getElementById('videoSource');
+                    const videoPreview = document.getElementById('videoPreview');
+                    videoSource.src = result.video_url;
+                    videoPreview.load();
+
+                    // Show plan
+                    let debugText = '✓ Generation successful!\n\n';
+                    debugText += 'Plan:\n' + result.plan + '\n\n';
+                    if (result.code) {
+                        debugText += 'Generated Code:\n' + result.code;
+                    }
+                    showDebug(debugText, 'success');
+
+                } else {
+                    // Show error
+                    lastError = result.errors;
+                    let errorText = '✗ Generation failed:\n\n' + result.errors;
+                    if (result.plan) {
+                        errorText = 'Plan:\n' + result.plan + '\n\n' + errorText;
+                    }
+                    if (result.code) {
+                        errorText += '\n\nGenerated Code:\n' + result.code;
+                    }
+                    showDebug(errorText, 'error');
+                    document.getElementById('fixBtn').classList.remove('hidden');
+                }
+
+            } catch (error) {
+                showDebug('Network error: ' + error.message, 'error');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        async function fixError() {
+            if (!lastError || !lastPrompt) {
+                showDebug('No error to fix.', 'error');
+                return;
+            }
+
+            setLoading(true, 'Fixing error...');
+            showDebug('Requesting fix from LLM...', 'info');
+
+            try {
+                const response = await fetch('/fix', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        prompt: lastPrompt,
+                        traceback: lastError
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    // Show video
+                    const videoSource = document.getElementById('videoSource');
+                    const videoPreview = document.getElementById('videoPreview');
+                    videoSource.src = result.video_url;
+                    videoPreview.load();
+
+                    // Show success
+                    let debugText = '✓ Error fixed!\n\n';
+                    if (result.code) {
+                        debugText += 'Fixed Code:\n' + result.code;
+                    }
+                    showDebug(debugText, 'success');
+                    document.getElementById('fixBtn').classList.add('hidden');
+                    lastError = null;
+
+                } else {
+                    // Show error
+                    lastError = result.errors;
+                    showDebug('✗ Fix failed:\n\n' + result.errors, 'error');
+                }
+
+            } catch (error) {
+                showDebug('Network error: ' + error.message, 'error');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        function setLoading(isLoading, text = 'Loading...') {
+            const loading = document.getElementById('loading');
+            const loadingText = document.getElementById('loadingText');
+            const generateBtn = document.getElementById('generateBtn');
+            const fixBtn = document.getElementById('fixBtn');
+
+            if (isLoading) {
+                loading.classList.add('active');
+                loadingText.textContent = text;
+                generateBtn.disabled = true;
+                fixBtn.disabled = true;
+            } else {
+                loading.classList.remove('active');
+                generateBtn.disabled = false;
+                fixBtn.disabled = false;
+            }
+        }
+
+        function showDebug(text, type = 'info') {
+            const debugInfo = document.getElementById('debugInfo');
+            debugInfo.textContent = text;
+            debugInfo.className = 'debug-content';
+            if (type === 'error') {
+                debugInfo.classList.add('error');
+            } else if (type === 'success') {
+                debugInfo.classList.add('success');
+            }
+        }
+
+        // Allow Enter+Ctrl to submit
+        document.getElementById('prompt').addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'Enter') {
+                generate();
+            }
+        });
+    </script>
+</body>
+</html>

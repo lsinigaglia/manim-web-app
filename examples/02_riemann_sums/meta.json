@@ -1,0 +1,6 @@
+{
+  "name": "Riemann Sum Rectangles",
+  "tags": ["riemann", "integral", "calculus", "rectangles", "area", "sum"],
+  "difficulty": "medium",
+  "description": "Shows Riemann rectangles approximating area under a curve"
+}
