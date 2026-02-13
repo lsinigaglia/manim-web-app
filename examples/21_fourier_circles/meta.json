@@ -1,0 +1,6 @@
+{
+  "name": "Fourier Epicycles",
+  "tags": ["fourier", "epicycles", "circles", "drawing", "orbit", "updater", "parametric"],
+  "difficulty": "hard",
+  "description": "Demonstrates epicycles (Fourier circles) drawing a shape through orbiting circles"
+}

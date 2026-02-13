@@ -1,0 +1,6 @@
+{
+  "name": "Rotating 3D Cube",
+  "tags": ["3d", "cube", "rotation", "ThreeDScene", "prism", "geometry"],
+  "difficulty": "easy",
+  "description": "Demonstrates a rotating 3D cube using ThreeDScene"
+}

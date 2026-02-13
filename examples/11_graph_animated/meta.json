@@ -1,0 +1,6 @@
+{
+  "name": "Animated Graph Growth",
+  "tags": ["graph", "network", "animation", "edges", "growing", "dynamic"],
+  "difficulty": "medium",
+  "description": "Demonstrates building a graph incrementally with animated edge additions"
+}

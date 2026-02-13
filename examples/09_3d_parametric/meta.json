@@ -1,0 +1,6 @@
+{
+  "name": "3D Parametric Curve",
+  "tags": ["3d", "parametric", "curve", "helix", "ThreeDScene", "ParametricFunction"],
+  "difficulty": "medium",
+  "description": "Demonstrates a 3D parametric curve (helix) using ParametricFunction"
+}

@@ -1,0 +1,6 @@
+{
+  "name": "Complex Updater Chain",
+  "tags": ["updater", "add_updater", "dynamic", "linked", "animation", "always_redraw"],
+  "difficulty": "hard",
+  "description": "Demonstrates complex updaters linking multiple objects together dynamically"
+}

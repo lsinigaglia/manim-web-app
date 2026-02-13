@@ -1,0 +1,6 @@
+{
+  "name": "NumberLine with Animated Pointer",
+  "tags": ["NumberLine", "pointer", "tracker", "ValueTracker", "number_line", "indicator"],
+  "difficulty": "medium",
+  "description": "Demonstrates NumberLine with an animated pointer/tracker moving along it"
+}

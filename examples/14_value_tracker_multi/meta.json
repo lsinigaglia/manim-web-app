@@ -1,0 +1,6 @@
+{
+  "name": "Multiple ValueTrackers",
+  "tags": ["ValueTracker", "tracker", "updater", "dynamic", "control", "parameter"],
+  "difficulty": "hard",
+  "description": "Demonstrates multiple ValueTrackers controlling different visual properties simultaneously"
+}

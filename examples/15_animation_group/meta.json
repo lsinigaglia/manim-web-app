@@ -1,0 +1,6 @@
+{
+  "name": "AnimationGroup with Lag Ratio",
+  "tags": ["AnimationGroup", "lag_ratio", "stagger", "sequence", "animation", "group"],
+  "difficulty": "easy",
+  "description": "Demonstrates AnimationGroup with lag_ratio for staggered animation effects"
+}

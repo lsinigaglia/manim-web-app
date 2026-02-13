@@ -1,0 +1,6 @@
+{
+  "name": "3D Camera Rotation",
+  "tags": ["3d", "camera", "rotation", "ThreeDScene", "sphere", "torus"],
+  "difficulty": "medium",
+  "description": "Demonstrates camera rotation around multiple 3D objects"
+}

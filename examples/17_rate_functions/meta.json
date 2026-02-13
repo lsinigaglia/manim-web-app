@@ -1,0 +1,6 @@
+{
+  "name": "Rate Functions Demo",
+  "tags": ["rate_func", "easing", "smooth", "linear", "rush_into", "rush_from", "animation"],
+  "difficulty": "easy",
+  "description": "Demonstrates different rate_func options showing various easing curves"
+}

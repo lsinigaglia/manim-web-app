@@ -1,0 +1,6 @@
+{
+  "name": "VGroup Arrange Layout",
+  "tags": ["VGroup", "arrange", "layout", "grid", "submobjects", "organize"],
+  "difficulty": "easy",
+  "description": "Demonstrates VGroup with arrange and arrange_in_grid for layout control"
+}

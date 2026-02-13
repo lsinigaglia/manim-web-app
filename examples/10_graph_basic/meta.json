@@ -1,0 +1,6 @@
+{
+  "name": "Basic Graph Network",
+  "tags": ["graph", "network", "vertices", "edges", "Graph", "nodes"],
+  "difficulty": "easy",
+  "description": "Demonstrates creating a basic graph with vertices and edges using Graph"
+}

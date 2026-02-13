@@ -6,3 +6,5 @@ python-multipart==0.0.6
 aiofiles==23.2.1
 python-dotenv==1.0.0
 manim==0.18.0
+chromadb>=0.4.22
+voyageai>=0.3.0

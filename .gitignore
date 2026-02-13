@@ -2,6 +2,9 @@
 generated/
 media/
 
+# Vector store
+chroma_db/
+
 # Python
 __pycache__/
 *.py[cod]

@@ -1,0 +1,6 @@
+{
+  "name": "Animated Spiral",
+  "tags": ["spiral", "parametric", "curve", "animation", "ParametricFunction", "polar"],
+  "difficulty": "easy",
+  "description": "Demonstrates an animated spiral using ParametricFunction"
+}

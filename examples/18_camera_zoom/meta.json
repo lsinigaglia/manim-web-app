@@ -1,0 +1,6 @@
+{
+  "name": "Camera Zoom and Pan",
+  "tags": ["camera", "zoom", "pan", "MovingCameraScene", "frame", "scale"],
+  "difficulty": "medium",
+  "description": "Demonstrates MovingCameraScene with camera zoom and pan effects"
+}

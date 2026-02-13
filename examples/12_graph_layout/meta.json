@@ -1,0 +1,6 @@
+{
+  "name": "Graph Layout Algorithms",
+  "tags": ["graph", "layout", "network", "spring", "circular", "spectral"],
+  "difficulty": "medium",
+  "description": "Demonstrates different graph layout algorithms by animating transitions between them"
+}

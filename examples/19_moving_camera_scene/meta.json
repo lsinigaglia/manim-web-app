@@ -1,0 +1,6 @@
+{
+  "name": "Camera Following Object",
+  "tags": ["camera", "MovingCameraScene", "follow", "tracking", "frame", "updater"],
+  "difficulty": "medium",
+  "description": "Demonstrates a MovingCameraScene where the camera follows a moving object"
+}

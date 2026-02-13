@@ -19,7 +19,7 @@ class ManimGenerator:
         self.client = AsyncAnthropic(api_key=api_key)
         self.model = "claude-sonnet-4-5-20250929"
 
-    async def generate(self, prompt: str, examples: List[Dict[str, Any]]) -> Dict[str, Any]:
+    async def generate(self, prompt: str, examples: List[Dict[str, Any]], api_refs: List[Dict[str, Any]] = None) -> Dict[str, Any]:
         """
         Generate Manim scene code from prompt and examples.
 
@@ -33,8 +33,8 @@ class ManimGenerator:
             }
         """
         try:
-            # Build system prompt with examples
-            system_prompt = self._build_system_prompt(examples)
+            # Build system prompt with examples and API refs
+            system_prompt = self._build_system_prompt(examples, api_refs=api_refs)
 
             # Build user prompt
             user_prompt = f"""Generate a Manim Community animation for this request:
@@ -170,8 +170,8 @@ Fix this error with the minimal possible change. Return the complete fixed code.
                 "error": f"Fix generation failed: {str(e)}"
             }
 
-    def _build_system_prompt(self, examples: List[Dict[str, Any]]) -> str:
-        """Build system prompt including example code."""
+    def _build_system_prompt(self, examples: List[Dict[str, Any]], api_refs: List[Dict[str, Any]] = None) -> str:
+        """Build system prompt including API references and example code."""
         prompt = """You are a Manim Community animation expert. You generate clean, working Manim scenes.
 
 CRITICAL RULES:
@@ -199,10 +199,20 @@ CRITICAL RULES:
 
 """
 
+        # Add relevant API references if provided
+        if api_refs:
+            prompt += "\n=== RELEVANT MANIM APIs ===\n"
+            prompt += "Use these API references to write correct code:\n\n"
+            for ref in api_refs[:10]:
+                prompt += f"--- {ref.get('name', '')} ({ref.get('module', '')}) ---\n"
+                prompt += ref.get('content', '')
+                prompt += "\n\n"
+
         # Add examples if provided
         if examples:
-            prompt += "\n\nREFERENCE EXAMPLES (adapt to v0.18.0):\n\n"
-            for i, ex in enumerate(examples[:2], 1):  # Max 2 examples
+            prompt += "\n=== WORKING EXAMPLES ===\n"
+            prompt += "Adapt these proven examples to fulfill the request:\n\n"
+            for i, ex in enumerate(examples[:5], 1):  # Max 5 examples
                 prompt += f"Example {i}: {ex.get('name', 'Unnamed')}\n"
                 prompt += f"Tags: {', '.join(ex.get('tags', []))}\n"
                 prompt += "```python\n"

@@ -1,0 +1,6 @@
+{
+  "name": "Simple Pendulum Simulation",
+  "tags": ["pendulum", "simulation", "physics", "updater", "oscillation", "swing"],
+  "difficulty": "hard",
+  "description": "Simulates a simple pendulum using updaters for continuous motion"
+}

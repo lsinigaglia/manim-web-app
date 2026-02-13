@@ -1,0 +1,6 @@
+{
+  "name": "Lissajous Curves",
+  "tags": ["lissajous", "curve", "parametric", "ValueTracker", "oscillation", "pattern"],
+  "difficulty": "medium",
+  "description": "Demonstrates Lissajous curves with animated parameter changes using ValueTracker"
+}

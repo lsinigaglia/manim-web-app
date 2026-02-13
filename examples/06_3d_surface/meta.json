@@ -1,0 +1,6 @@
+{
+  "name": "3D Surface Plot",
+  "tags": ["3d", "surface", "ThreeDScene", "three_d", "mesh", "plot"],
+  "difficulty": "medium",
+  "description": "Demonstrates creating a 3D surface using ThreeDScene and Surface"
+}
